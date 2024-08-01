@@ -1,38 +1,23 @@
-.App {
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.comparison-table td, .comparison-table th {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.header td {
+  color: #ffffff; /* White text for headers */
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.header td:first-child {
+  background-color: #7D7C7C; /* '현행' */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.header td:last-child {
+  background-color: #05BFDB; /* '개정안' */
 }
