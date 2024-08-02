@@ -1,70 +1,26 @@
-# Getting Started with Create React App
+# PDF-VIEWER-APP
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## FrontEnd
 
-## Available Scripts
+npx create-react-app pdf-viewer-app
+pdf-viewer-app 생성
 
-In the project directory, you can run:
+npm install axios
+axios: HTTP 요청을 위한 라이브러리입니다. 서버로 파일을 업로드하거나 데이터를 가져올 때 사용
 
-### `npm start`
+## BackEnd
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+pdf-viewer-app -> server -> index.js
+npm init -y
+npm install express multer pdf.js-extract
+express: 웹 서버를 구축하기 위한 프레임워크
+multer: 파일 업로드를 처리하는 미들웨어
+pdf.js-extract: PDF 파일에서 텍스트를 추출하기 위한 라이브러리
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+extractTableFromPDF(filePath): pdf.js-extract를 사용하여 지정된 PDF 파일의 특정 페이지에서 텍스트를 추출. 추출된 데이터는 PDF의 페이지별로 나누어져 있으며, 이 데이터를 이용해 테이블을 파싱하는 parseTableFromContent 함수에 전달합니다.
 
-### `npm test`
+parseTableFromContent(pages): PDFExtract로부터 받은 페이지 데이터를 반복 처리하여, 신·구조문대비표라는 텍스트 이후에 나타나는 테이블 형식의 데이터를 파싱, 각 페이지의 내용을 순회하며 특정 구분선을 기준으로 데이터를 분할하고, 좌표를 기반으로 두 개의 열로 나누어 이중 배열 형태로 저장합니다. 마지막으로, 데이터 정리 및 컬럼 헤더를 추가하여 최종적으로 정리된 이중 배열을 반환
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+onFileChange(e): 파일 입력 필드에서 파일이 선택될 때 호출되며, 선택된 파일을 file 상태로 저장합니다. 이를 통해 사용자가 선택한 파일을 서버로 업로드할 준비를 합니다. 또한, 새로운 파일을 선택할 때마다 error 상태를 초기화하여 이전에 발생한 오류 메시지를 제거
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+onFileUpload(): 업로드 버튼이 클릭될 때 호출되며, 선택된 파일을 서버로 전송합니다. FormData 객체를 생성하여 파일을 첨부하고, axios를 사용해 서버의 /upload 엔드포인트로 HTTP POST 요청을 보냅니다. 서버로부터 응답이 성공적으로 돌아오면, 파싱된 PDF 데이터를 parsedContent 상태에 저장하고, 실패할 경우 오류 메시지를 error 상태에 업데이트
